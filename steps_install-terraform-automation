@@ -1,0 +1,66 @@
+Script 1: Installing Terraform and adding path to environment variables
+# Download terraform and unzip to c:\terraform folder$Path = $env:TEMP;
+cd $Path;
+$File = "terraform_1.5.7_windows_amd64.zip";
+$Destination = "c:\terraform";
+Invoke-WebRequest "https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_windows_amd64.zip&quot; -OutFile $Path\$File;
+Expand-Archive -Path $Path\$File -DestinationPath $Destination;
+
+# Finally let us add the persitent PATH to SYSTEM variablesetx PATH "$env:path;C:\terraform" -m
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MORE PRACTISE
+
+# Adding the terraform folder c:\terraform to SYSTEM variable PATH, so that Windows knows where to find terraform.exe
+
+#### METHOD 1
+### Use Case: I am working on a TEMP System. I just want to inform PowerShell about terraform PATH
+## This is a situation when I do not want to PERMANENTLY change Windows settings
+# I just download Terraform use and delete permamnently
+
+# Refresh PowerShell Machine Environment variables
+$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
+
+# Optionally if you want to refesh both USER and SYSTEM variables
+$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")  
+
+# Find current PATH variables
+$env:PATH
+
+# OR Splitting the output per line
+$env:Path -split ';'
+
+
+# Add to the Windows PATH environment variable
+  #First, pick a path to add:
+  $addPath = 'C:\Terraform'
+ 
+  # Add the path to System PATH variable
+  $env:Path = ($arrPath + $addPath) -join ';'
+ 
+ 
+  # Verify
+  $env:Path -split ';'
+ 
+  # You restart PowerShell all is gone
+ 
+ 
+#### METHOD 2 Permanent Addition
+### Use Case: I want to permanently add the path
+## Registry saves information of all the paths we added, here
+
+# In Run Dialogbox type REGEDT32 and press Enter to open Registry
+  HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment
+
+  # On the right side double click "Path" to find the variable added to System
+
+
+# Finally let us add the persitent PATH to SYSTEM variable
+setx PATH "$env:path;C:\terraform" -m
+
+
+# Exit and restart PowerShell and type this command to Verify
+$env:Path -split ';'
+
+# Find Terraform version
+terraform -version
