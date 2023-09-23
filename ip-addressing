@@ -1,0 +1,58 @@
+Posted 25 Aug (Edited 31 Aug)
+Region > VNET > Subnets
+
+
+VNET
+
+Subnet-www -----------------------------------Allow IN FROM 0.0.0.0/0 (Any Where)
+           -----------------------------------Allow IN/OUT Subnet-DB
+           -----------------------------------Block ALL
+ VM = www.icicibank.com
+
+Subnet-DB
+VM = db.icicibank.com------------------------Internet IN/OUT Blocked;
+                     ------------------------Traffic IN/OUT Subnet-www
+
+Subnet-TEST
+VM = www-dummy.icicibank.com
+VM = db-dummy.icicibank.com
+
+Source:
+10.0.0.5
+10.0.0.6
+
+Allow INBOUND from 192.168.1.0/24
+Allow OUTBOUND to  192.168.1.0/24
+Allow OUTBOUND to  0.0.0.0/0
+Allow INBOUND to   0.0.0.0/0
+
+Destination:
+192.168.1.9
+192.168.1.10
+
+
+Source:
+192.168.1.9
+192.168.1.10
+
+Allow INBOUND from 10.0.0.0/24
+Allow OUTBOUND to  10.0.0.0/24
+
+Destination:
+10.0.0.5
+10.0.0.6
+
+
+Network Security Group (NSG): Security Groups (AWS)
+Traffic Rules
+Where you apply matters: VM, ALB, SQL DB, Storage, Network, Website
+ACL = Access Control List
+
+ACTION         SOURCE         DESTINATION        Flow        PORT
+Allow        0.0.0.0/0    Subnet            INBOUND          *
+Block         Subnet        0.0.0.0/0        OUTBOUND         443
+Block         Subnet        0.0.0.0/0        OUTBOUND         80
+
+Q: Can we write rules for a User?
+
+Answer = Yes
