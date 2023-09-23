@@ -1,0 +1,35 @@
+Create Github Account.
+Install all the tools given as links here.
+Configure your PowerShell First:
+https://docs.google.com/document/d/1IEf8rpBuVMyD-xlvozvii340vefAz8TmfC6CS9P6Nx4/edit?usp=sharing
+
+Install winget:
+https://github.com/microsoft/winget-cli/releases/download/v1.6.2291-preview/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+
+Restart PowerShell
+
+Install Az Module:
+https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-10.2.0
+
+Restart PowerShell
+
+Verify Login: ConnectAzAccount
+
+Install CLI Module:
+https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli
+
+Restart PowerShell
+Verify Login: az login
+
+Create a Service Principal for Terraform:
+Connect-AzAccount
+Get-AzContext
+$sp = New-AzADServicePrincipal -DisplayName sp-terraform -Role "Contributor"
+
+Make note of the service principal application ID
+$sp.AppId
+
+Get the auto generated password to text:
+$sp.PasswordCredentials.SecretText
+
+Make note of the above password.
